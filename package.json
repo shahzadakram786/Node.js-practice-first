@@ -1,0 +1,13 @@
+{
+  "name": "node-webloop",
+  "version": "1.0.0",
+  "description": "Node js crash course",
+  "main": "pages.js",
+  
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Shahzad",
+  "license": "MIT"
+}

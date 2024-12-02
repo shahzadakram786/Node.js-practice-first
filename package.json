@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "Node js crash course",
   "main": "pages.js",
-  
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon --env-file=.env server2.js"
   },
   "author": "Shahzad",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
 }

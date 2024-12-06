@@ -61,12 +61,42 @@ const server = createServer((req, res) => {
       } else if (
         req.url.match(/\/api\/users\/([0-9]+)/) &&
         req.method === "GET"
-      ) {
+      )
+      {
         getIdHandler(req, res);
-      } else {
+      }
+      
+      else if (req.url === "/api/add-user" && req.method === "POST")
+      {
+        let body = ""
+        req.on("data", (chunk) => {
+          body += chunk.toString();
+        });
+    
+        // Process once data collection is complete
+        req.on("end", () => {
+          try {
+            const parsedBody = JSON.parse(body); // Parse JSON body
+            console.log("Request Body:", parsedBody);
+            
+            //add user logic 
+            
+            
+            // Log the parsed body
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
+          res.statusCode = 200;
+          res.end("Request logged");
+        });
+
+      }
+      else {
         notFoundHandler(req, res);
       }
     });
+
+
   });
 });
 

@@ -12,15 +12,12 @@ const users = [
   //   { name: "ajaml islam" ,  lastName:'ahmad'},
   //   { name: "abbas khan"  ,  lastName:'ali'},
   // ];
-  
-
-
 
    for(let i = 0 ; i <= 3 ; i++){
-    const prompt=require("prompt-sync")({sigint:true}); 
 
-    let usersName = prompt("username");
 
+    let usersName = prompt("what is your name");
+   
     if(!users.id){
       users[users.length] = {id:users.length + 1 , name:usersName}
        console.log(users)

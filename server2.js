@@ -1,4 +1,5 @@
 import { createServer } from "http";
+import prompt from "prompt";
 const PORT = process.env.PORT;
 
 const users = [
@@ -34,7 +35,16 @@ const getIdHandler = (req, res) => {
   if (user) {
     console.log("id: ", id);
     res.write(JSON.stringify(user));
-  } else {
+  } 
+   if(!users.id ){
+    // let addData = alert('enter your name')
+    users[users.length] = {id:users.length + 1 , name:'akram'}
+     console.log(users)
+  }
+  // if(){
+
+  // }
+   else {
     res.statusCode = 404;
     res.write(JSON.stringify({ messege: "User not found" }));
   }
@@ -52,56 +62,63 @@ const notFoundHandler = (req, res) => {
 };
 
 const server = createServer((req, res) => {
- 
- 
-    logger(req, res, () => {
+  logger(req, res, () => {
     jsonMiddleware(req, res, () => {
       if (req.url === "/api/users" && req.method === "GET") {
         getUsersHandler(req, res);
       } else if (
         req.url.match(/\/api\/users\/([0-9]+)/) &&
         req.method === "GET"
-      )
-      {
+      ) {
         getIdHandler(req, res);
       }
-      
+
+  
+
       else if (req.url === "/api/add-user" && req.method === "POST")
       {
         let body = ""
         req.on("data", (chunk) => {
           body += chunk.toString();
         });
-    
-        // Process once data collection is complete
-        req.on("end", () => {
-          try {
-            const parsedBody = JSON.parse(body); // Parse JSON body
-            console.log("Request Body:", parsedBody);
-            
-            //add user logic 
-            
-            
-            // Log the parsed body
-          } catch (error) {
-            console.error("Error parsing JSON:", error);
+
+      // Process once data collection is complete
+      req.on("end", () => {
+        try {
+          let parsedBody = JSON.parse(body); // Parse JSON body
+          console.log("Request Body:", parsedBody);
+        let {name} =  parsedBody
+          if(!users.name === name){
+            // let addData = alert('enter your name')
+            users[users.length] = {id:users.length + 1 , name:name}
+             console.log(users , "matching")
           }
-          res.statusCode = 200;
-          res.end("Request logged");
-        });
+          else{
+             console.log("alredy exists")
+
+          }
+
+          // if(){
+          //   // let addData = alert('enter your name')
+          //   // users[users.length] = {id:users.length + 1 , name:name}
+          //    console.log("alredy exists")
+          // }
+          
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+        res.statusCode = 200;
+        res.end("Request logged");
+      });
 
       }
       else {
         notFoundHandler(req, res);
       }
     });
-
-
   });
 });
 
 server.listen(PORT, () => {
   console.log(`Server is running at Port: ${PORT}`);
 });
-
-

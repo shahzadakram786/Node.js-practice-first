@@ -88,6 +88,7 @@ const server = createServer((req, res) => {
           let parsedBody = JSON.parse(body); // Parse JSON body
           console.log("Request Body:", parsedBody);
         let {name} =  parsedBody
+        
           if(!users.name === name){
             // let addData = alert('enter your name')
             users[users.length] = {id:users.length + 1 , name:name}

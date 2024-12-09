@@ -1,5 +1,5 @@
 import { createServer } from "http";
-import prompt from "prompt";
+// import prompt from "prompt";
 const PORT = process.env.PORT;
 
 const users = [
@@ -89,13 +89,14 @@ const server = createServer((req, res) => {
           console.log("Request Body:", parsedBody);
         let {name} =  parsedBody
         
-          if(!users.name === name){
+          if(!users.some(user => user.name === name)){
             // let addData = alert('enter your name')
             users[users.length] = {id:users.length + 1 , name:name}
              console.log(users , "matching")
           }
           else{
-             console.log("alredy exists")
+             console.log("alredy exists you cant add same names")
+            //  console.log(users , "matching")
 
           }
 
@@ -113,6 +114,15 @@ const server = createServer((req, res) => {
       });
 
       }
+      else if (req.url === '/api/update-user' && req.method === 'PUT'){
+
+      }
+      
+
+      else if (req.url === '/api/delete-user' && req.method === 'DELETE'){
+
+      }
+
       else {
         notFoundHandler(req, res);
       }

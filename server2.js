@@ -80,7 +80,10 @@ const server = createServer((req, res) => {
         let body = ""
         req.on("data", (chunk) => {
           body += chunk.toString();
+          console.log('chunk',chunk.toString())
+          console.log('body',body)
         });
+
 
       // Process once data collection is complete
       req.on("end", () => {
@@ -115,7 +118,7 @@ const server = createServer((req, res) => {
 
       }
       else if (req.url === '/api/update-user' && req.method === 'PUT'){
-
+          
       }
       
 

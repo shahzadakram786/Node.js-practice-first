@@ -1,4 +1,5 @@
 import { createServer } from "http";
+
 // import prompt from "prompt";
 const PORT = process.env.PORT;
 
@@ -73,6 +74,7 @@ const server = createServer((req, res) => {
         getIdHandler(req, res);
       } else if (req.url === "/api/add-user" && req.method === "POST") {
         let body = "";
+
         req.on("data", (chunk) => {
           body += chunk.toString();
           console.log("chunk", chunk.toString());
@@ -92,7 +94,7 @@ const server = createServer((req, res) => {
               console.log(users, "matching");
             } else {
               console.log("alredy exists you cant add same names");
-               console.log(users , "matching")
+              console.log(users, "matching");
             }
 
             // if(){
@@ -108,40 +110,51 @@ const server = createServer((req, res) => {
         });
       } else if (req.url === "/api/update-user" && req.method === "PUT") {
         let body = "";
-      
+
         req.on("data", (chunk) => {
           body += chunk.toString();
         });
-      
+
         req.on("end", () => {
           try {
+            // json.pase(body) it convert the string to object
             let parsedBody = JSON.parse(body);
+            console.log("parsedBOdy = > ", parsedBody , users);
+
             let { id, name } = parsedBody;
-      
             let userFound = false;
-      
+
             for (let i = 0; i < users.length; i++) {
               if (users[i].id === id) {
                 users[i].name = name;
                 userFound = true;
+                console.log("users = > ",users)
                 break;
+
+                // console.log("succesfuly loged",users)
               }
             }
-      
+
             if (userFound) {
               res.statusCode = 200;
-              res.end(JSON.stringify({ message: "User updated successfully", users }));
+              res.end(
+                JSON.stringify({ message: "succesfully updated", users })
+              );
+
+              // console.log("userFound => ", userFound);
+              // console.log("users => ", users);
             } else {
               res.statusCode = 404;
-              res.end(JSON.stringify({ message: "User not found" }));
+              res.end(JSON.stringify({ message: "user not found" }));
+              // console.log("user not found")
             }
           } catch (error) {
-            console.error("Error parsing JSON:", error);
+            console.error("error pasring json: ", error);
             res.statusCode = 400;
-            res.end(JSON.stringify({ message: "Invalid JSON format" }));
+            res.end(JSON.stringify({ message: "invalid json file " }));
           }
         });
-      }else if (req.url === "/api/delete-user" && req.method === "DELETE") {
+      } else if (req.url === "/api/delete-user" && req.method === "DELETE") {
       } else {
         notFoundHandler(req, res);
       }

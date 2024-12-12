@@ -124,6 +124,11 @@ const server = createServer((req, res) => {
             let { id, name } = parsedBody;
             let userFound = false;
 
+
+            // let user = users.find((user) => user.id === id)
+
+            // or 
+
             for (let i = 0; i < users.length; i++) {
               if (users[i].id === id) {
                 users[i].name = name;
@@ -136,6 +141,7 @@ const server = createServer((req, res) => {
             }
 
             if (userFound) {
+              // user.name = name ;  this will be here when i use find
               res.statusCode = 200;
               res.end(
                 JSON.stringify({ message: "succesfully updated", users })
@@ -155,7 +161,54 @@ const server = createServer((req, res) => {
           }
         });
       } else if (req.url === "/api/delete-user" && req.method === "DELETE") {
-      } else {
+        let body = '';
+      
+        req.on("data", (chunk) => {
+          body += chunk.toString();
+        });
+      
+        req.on("end", () => {
+          try {
+            let parsedBody = JSON.parse(body);
+            let { id } = parsedBody;
+      
+            if (!id) {
+              res.statusCode = 400;
+              res.end(JSON.stringify({ message: "ID is required" }));
+              return;
+            }
+      
+            let userFound = false;
+      
+            // Find and manually delete the user
+            for (let i = 0; i < users.length; i++) {
+              if (users[i].id === id) {
+                // Shift elements to the left
+                for (let j = i; j < users.length - 1; j++) {
+                  users[j] = users[j + 1];
+                }
+                users.length--; // Shorten the array
+                userFound = true;
+                break;
+              }
+            }
+      
+            if (userFound) {
+              console.log("delted : " , users)
+              res.statusCode = 200;
+              res.end(JSON.stringify({ message: "User deleted successfully", users }));
+            } else {
+              res.statusCode = 404;
+              res.end(JSON.stringify({ message: "User not found" }));
+            }
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+            res.statusCode = 400;
+            res.end(JSON.stringify({ message: "Invalid JSON format" }));
+          }
+        });
+      }
+      else {
         notFoundHandler(req, res);
       }
     });

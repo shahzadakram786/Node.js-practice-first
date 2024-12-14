@@ -212,8 +212,11 @@ const server = createServer((req, res) => {
         notFoundHandler(req, res);
       }
     });
+
   });
 });
+
+
 
 server.listen(PORT, () => {
   console.log(`Server is running at Port: ${PORT}`);
